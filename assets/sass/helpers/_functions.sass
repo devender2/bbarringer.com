@@ -1,0 +1,63 @@
+// Removes any unit(px, em, rem) from a number. Sometimes useful when trying to use a variable inside another mixin.
+//
+// $number - The number with unit you would like striped.
+@function strip-units($number)
+	@return $number / ($number * 0 + 1)
+
+// Converts a px based unit to em value.
+//
+// $target  - The value in px you would like converted
+// $context - The font size of the current context. This is required due to em cascading effect.
+@function em($target, $context: $base-font-size)
+	@if $target == 0
+		@return 0
+	@return $target / $context + 0em
+
+// Converts a em based unit to px value.
+//
+// $target  - The value in ems you would like converted
+// $context - The font size of the current context. This is required due to em cascading effect.
+@function px($target, $context: $base-font-size)
+	@if $target == 0
+		@return 0
+	@return strip-units($target) * $context
+
+// Converts a px based unit to rem value.
+//
+// $target  - The value in px you would like converted
+@function rem($target)
+	@if $target == 0
+		@return 0
+	@return $target / $base-font-size + 0rem
+
+// Get the % width for grid columns.
+//
+// $column-count - Number of columns you would like the width for.
+// $context      - The current total number of columns the grid contains. Defaults to $grid-column-count found in helpers/_vars.sass
+@function column-width($column-count, $context: $grid-column-count)
+	@return ($column-count / $context) * 100%
+
+// A way to reference a key value pair in sass. Pulls the value out of a list with the following structure:
+// $list: key value, key value, key value
+//
+// $haystack - The list to pull values from.
+// $needle   - The key for the value you would like. 
+@function match($haystack, $needle)
+	@each $item in $haystack
+		$index: index($item, $needle)
+		@if $index
+			$return: if($index == 1, 2, $index)
+			@return nth($item, $return)
+	@return false
+
+// Get the height of an individual sprite.
+//
+// $sprite-name - The name of the sprite you would like the height of.
+@function sprite-height($sprite-name)
+	@return (image-height(sprite-file($sprite-sheet, $sprite-name)))
+
+// Get the width of an individual sprite.
+//
+// $sprite-name - The name of the sprite you would like the width of.
+@function sprite-width($sprite-name)
+	@return (image-width(sprite-file($sprite-sheet, $sprite-name)))

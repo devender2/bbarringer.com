@@ -1,0 +1,20 @@
+// Clears floated elements. Often is gets @extended.
+.group:after
+	content: ""
+	display: table
+	clear: both
+
+// Hides any element without using display none. Often is gets @extended.
+.visuallyhidden
+	position: absolute
+	overflow: hidden
+	clip: rect(0 0 0 0)
+	height: 1px
+	width: 1px
+	margin: -1px
+	padding: 0
+	border: 0
+
+// Stops chrome from moving elements slightly when using transforms. Think this had to do with the browser repainting things and could be solved by forcing new composite layers with translateZ(0).
+.no-shift
+	-webkit-transform: translate3d(0,0,0)

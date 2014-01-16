@@ -1,0 +1,17 @@
+// Placeholder for each sprite.
+%sprite
+	display: inline-block
+	background: $sprite-sheet
+	vertical-align: top
+
+// Generates a list of sprites from all sprites included.
+@each $icon in sprite_names($sprite-sheet)
+	.sprite--#{$icon}
+		@extend %sprite
+		background-position: sprite-position($sprite-sheet, $icon)
+		+sprite-dimensions($sprite-sheet, $icon)
+
+		+media(retina)
+			background: $sprite-sheet-retina
+			+background-size( round(image-width(sprite-path($sprite-sheet-retina))/2) round(image-height(sprite-path($sprite-sheet-retina))/2) )
+			background-position: 0 round(nth( sprite-position($sprite-sheet-retina, $icon), 2) / 2)
