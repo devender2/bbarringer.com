@@ -25,63 +25,53 @@ module.exports = function(grunt) {
 		},
 
 		concat: {
-			plugins: {
-				src: 'assets/js/plugins/**/*.js',
-				dest: 'assets/js/build/plugins.js'
-			},
-			custom: {
-				options: {
-					banner: ';(function( $ ) { \n\t\'use strict\';\n\n',
-					footer: '\n\n}(jQuery));'
-				},
-				src: 'assets/js/src/**/*.js',
-				dest: 'assets/js/build/custom.js'
+
+			vendor: {
+				src: [
+					'assets/js/components/underscore/underscore-min.js',
+					'assets/js/components/backbone/backbone.js'
+				],
+				dest: 'assets/js/build/vendor.js',
 			},
 			app: {
 				src: [
 					'assets/js/app/templates.js', 
 					'assets/js/app/config.js', 
 					'assets/js/app/__.js', 
-					'assets/js/app/components.js', 
+					'assets/js/app/component.js', 
 					'assets/js/app/events.js', 
 					'assets/js/app/init.js',
 					'assets/js/app/app.js'
 				],
 				dest: 'assets/js/build/app.js'
-			},
-			dist: {
-				src: [
-					'<%= concat.plugins.dest %>',
-					'<%= concat.custom.dest %>',
-					'<%= concat.app.dest %>'
-				],
-				dest: 'assets/js/<%= pkg.name %>.js'
 			}
 		},
 
 		uglify: {
   			options: {
     			// the banner is inserted at the top of the output
-    			banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+    			banner: '/*! <%= pkg.name %> main - built with Backbone + Underscore - built <%= grunt.template.today("dd-mm-yyyy") %> */\n'
   			},
-  			dist: {
-   				files: {
-      				'assets/js/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-    			}
+			
+			vendor: {
+  				src: [ '<%=concat.vendor.dest%>' ],
+  				dest: 'assets/js/release/vendor.min.js'
+  			},
+  			app: {
+  				src: [ '<%=concat.app.dest%>' ],
+  				dest: 'assets/js/release/app.min.js'
   			}
 		},
 
-		clean: ['assets/js/build'],
-
 		watch: {
-			js: {
-				files: [
-					'<%= concat.plugins.src %>',
-					'<%= concat.custom.src %>',
-					'<%= concat.app.src %>'
-				],
-				tasks: ['clean', 'concat', 'uglify']
-			}
+			vendor: {
+				files: [ 'assets/js/components/**/*.js' ],
+				tasks: [ 'concat:vendor', 'uglify:vendor' ]
+			},
+			app: {
+				files: [ 'assets/js/app/*.js' ],
+				tasks: [ 'concat:app', 'uglify:app' ]
+			},
 		},
 
 		concurrent: {
@@ -97,11 +87,11 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-concurrent');
 
+	//grunt.registerTask('default', ['concat', 'uglify', 'compass', 'clean']);
 	grunt.registerTask('default', ['concurrent:target' ]);
 
 }; // module.exports
