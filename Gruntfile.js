@@ -32,6 +32,7 @@ module.exports = function(grunt) {
 					'assets/js/components/backbone/backbone.js'
 				],
 				dest: 'assets/js/build/vendor.js',
+				nonull: true
 			},
 			app: {
 				src: [
@@ -43,7 +44,8 @@ module.exports = function(grunt) {
 					'assets/js/app/init.js',
 					'assets/js/app/app.js'
 				],
-				dest: 'assets/js/build/app.js'
+				dest: 'assets/js/build/app.js',
+				nonull: true
 			}
 		},
 
