@@ -16,3 +16,11 @@ components.
 * Compass/SASS
 * Grunt
 * Bower
+
+### How to make things tick
+
+* Clone down the repo
+* Run "npm install" to grab node modules you need
+* Run "grunt" and off you go
+* Add "SetEnv SERVER_TYPE production" to the .htaccess file to simulate a production environment (see footer.php). 
+* Note: You may need to "touch" a javascript file in app/ and components/ to trigger grunt watch for concat/uglify tasks
