@@ -15,10 +15,6 @@ module.exports = function(grunt) {
 					imagesDir: 'img',
 					relativeAssets: true,
 					outputStyle: production ? 'compressed' : 'nested',
-					// SPECIAL NOTE ON SOURCE MAPS:
-					// This package currently has a bug with timestamps.  To use sourcemaps, edit node_modules/grunt-contrib-compass/tasks/compass.js
-					// --> line 45 (display compilation time) and comment out the next 3 lines
-					raw: 'preferred_syntax = :sass\n' + ( production ? '' : 'sass_options = {:sourcemap => true}' ),
 					watch: true
 				}
 			}
